@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'package:usersList/View/userDetails.dart';
 import 'package:usersList/viewModel/userList.dart';
@@ -12,10 +13,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Box<String> feedsBox = Hive.box('userList');
   @override
   Widget build(BuildContext context) {
     final userNotifier = Provider.of<UserListApi>(context, listen: false);
-    var userId;
+    // var userId;
 
     return Scaffold(
       appBar: AppBar(
@@ -46,10 +48,12 @@ class _HomePageState extends State<HomePage> {
                       itemBuilder: (BuildContext context, int index) {
                         return ListTile(
                             onTap: () {
-                              setState(() {
-                                userId = snapshot.data.data[index].id;
-                                print(userId);
-                              });
+                              // setState(() {
+                              //   userId = snapshot.data.data[index].id;
+                              //   print(userId);
+                              // });
+                              final userId = snapshot.data.data[index].id;
+                              feedsBox.put('USERID', userId);
                               Platform.isAndroid
                                   ? Navigator.push(
                                       context,
