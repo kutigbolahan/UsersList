@@ -30,6 +30,9 @@ dependencies:
   cupertino_icons: ^1.0.0
   provider: ^4.3.3
   http: ^0.12.2
+  hive:
+  hive_flutter: 
+  path_provider:  
 
 dev_dependencies:
   flutter_test:
