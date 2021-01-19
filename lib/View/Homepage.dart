@@ -1,11 +1,21 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:usersList/View/userDetails.dart';
 import 'package:usersList/viewModel/userList.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    final userNotifier = Provider.of<UserListApi>(context);
+    final userNotifier = Provider.of<UserListApi>(context, listen: false);
+    var userId;
 
     return Scaffold(
       appBar: AppBar(
@@ -15,8 +25,7 @@ class HomePage extends StatelessWidget {
       body: SafeArea(
         child: Center(
           child: FutureBuilder(
-              future: Provider.of<UserListApi>(context, listen: false)
-                  .getUsersList(context),
+              future: userNotifier.getUsersList(context),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
@@ -36,6 +45,23 @@ class HomePage extends StatelessWidget {
                       itemCount: snapshot.data.data.length,
                       itemBuilder: (BuildContext context, int index) {
                         return ListTile(
+                            onTap: () {
+                              setState(() {
+                                userId = snapshot.data.data[index].id;
+                                print(userId);
+                              });
+                              Platform.isAndroid
+                                  ? Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => UserDetails()),
+                                    )
+                                  : Navigator.push(
+                                      context,
+                                      CupertinoPageRoute(
+                                          builder: (context) => UserDetails()),
+                                    );
+                            },
                             leading: CircleAvatar(
                                 backgroundColor: Colors.white,
                                 radius: 20,
