@@ -6,10 +6,10 @@ class HttpService with ChangeNotifier {
 
   getData(apiUrl) async {
     var fullUrl = baseURL + apiUrl;
-    return await http.get(fullUrl, headers: _setHeaders());
+    return await http.get(fullUrl, headers: setHeaders());
   }
 
-  _setHeaders() => {
+  setHeaders() => {
         'Content-type': 'application/json',
         'Accept': 'application/json',
         'app-id': '6005c04cde65c641e80cbd07'

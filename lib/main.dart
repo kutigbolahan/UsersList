@@ -14,7 +14,7 @@ void main() async {
   await Hive.initFlutter();
   Directory document = await getApplicationDocumentsDirectory();
   Hive.init(document.path);
-  await Hive.openBox<String>('userList');
+  await Hive.openBox('userList');
   runApp(MyApp());
 }
 

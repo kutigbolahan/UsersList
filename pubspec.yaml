@@ -32,11 +32,13 @@ dependencies:
   http: ^0.12.2
   hive:
   hive_flutter: 
-  path_provider:  
+  path_provider: 
+  data_connection_checker:   
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  mockito:  
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

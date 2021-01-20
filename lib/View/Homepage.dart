@@ -13,7 +13,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  Box<String> feedsBox = Hive.box('userList');
+  Box feedsBox = Hive.box('userList');
   @override
   Widget build(BuildContext context) {
     final userNotifier = Provider.of<UserListApi>(context, listen: false);
@@ -21,6 +21,30 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+              icon: Icon(Icons.refresh),
+              onPressed: () {
+                Platform.isIOS
+                    ? Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) => HomePage()),
+                        (Route<dynamic> route) => false)
+                    : Navigator.of(context).pushAndRemoveUntil(
+                        CupertinoPageRoute(builder: (context) => HomePage()),
+                        (Route<dynamic> route) => false);
+                // Platform.isAndroid
+                //     ?
+                //     Navigator.pushAndRemoveUntil(
+
+                //         context,
+                //         MaterialPageRoute(builder: (context) => HomePage(),(Route<dynamic> route) => false),
+                //       )
+                //     : Navigator.pushAndRemoveUntil(
+                //         context,
+                //         CupertinoPageRoute(builder: (context) => HomePage()),
+                //       );
+              })
+        ],
         title: Text('UsersList'),
         centerTitle: true,
       ),
@@ -35,10 +59,16 @@ class _HomePageState extends State<HomePage> {
                   );
                 }
                 if (snapshot.connectionState == ConnectionState.none) {
-                  return Center(child: Text('Error!!! Plesea try again'));
+                  return Center(child: Text('Error!!! Please try again'));
                 }
                 if (snapshot.hasError) {
-                  return Center(child: Text('Error!!! Plesea try again'));
+                  return Center(child: Text('Error!!! Please try again'));
+                }
+                if (snapshot.data == null) {
+                  return Center(
+                    child: Text(
+                        'Error!!! Please check your internet connection and try again'),
+                  );
                 }
                 if (snapshot.connectionState == ConnectionState.done) {
                   return ListView.separated(
@@ -48,10 +78,6 @@ class _HomePageState extends State<HomePage> {
                       itemBuilder: (BuildContext context, int index) {
                         return ListTile(
                             onTap: () {
-                              // setState(() {
-                              //   userId = snapshot.data.data[index].id;
-                              //   print(userId);
-                              // });
                               final userId = snapshot.data.data[index].id;
                               feedsBox.put('USERID', userId);
                               Platform.isAndroid
@@ -68,7 +94,7 @@ class _HomePageState extends State<HomePage> {
                             },
                             leading: CircleAvatar(
                                 backgroundColor: Colors.white,
-                                radius: 20,
+                                radius: 30,
                                 backgroundImage: NetworkImage(
                                     snapshot.data.data[index].picture)),
                             title: Row(

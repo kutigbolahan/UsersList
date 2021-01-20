@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
@@ -10,42 +11,74 @@ import 'package:usersList/viewModel/Network.dart';
 class UserListApi with ChangeNotifier {
   UserList _userList;
   UserDetails _userDetails;
-  Box<String> feedsBox = Hive.box('userList');
+  Box feedsBox = Hive.box('userList');
 
   // ignore: unused_element
   Future<UserList> getUsersList(BuildContext context) async {
-    try {
-      var response =
-          await Provider.of<HttpService>(context).getData('user?limit=100');
+    var listener =
+        DataConnectionChecker().onStatusChange.listen((status) async {
+      switch (status) {
+        case DataConnectionStatus.connected:
+          print('Data connection is available.');
+          try {
+            var response =
+                await Provider.of<HttpService>(context, listen: false)
+                    .getData('user?limit=100');
 
-      if (response.statusCode == 200) {
-        var data = json.decode(response.body);
-        _userList = UserList.fromJson(data);
-        return _userList;
+            if (response.statusCode == 200) {
+              var data = json.decode(response.body);
+              _userList = UserList.fromJson(data);
+
+              return _userList;
+            }
+            notifyListeners();
+          } catch (e) {
+            print(e);
+            print(e.message);
+          }
+
+          break;
+        case DataConnectionStatus.disconnected:
+          print('no network');
+
+          break;
       }
-      notifyListeners();
-    } catch (e) {
-      print(e);
-      return e.message;
-    }
+    });
+    await Future.delayed(Duration(seconds: 30));
+    await listener.cancel();
     return _userList;
   }
 
   Future<UserDetails> getUserDetails(BuildContext context) async {
-    try {
-      var response = await Provider.of<HttpService>(context)
-          .getData('user/3JAf8R85oIlxXd58Piqk');
+    var listener =
+        DataConnectionChecker().onStatusChange.listen((status) async {
+      switch (status) {
+        case DataConnectionStatus.connected:
+          print('Data connection is available.');
+          try {
+            var response =
+                await Provider.of<HttpService>(context, listen: false)
+                    .getData('user/${feedsBox.get('USERID')}');
 
-      if (response.statusCode == 200) {
-        var data = json.decode(response.body);
-        _userDetails = UserDetails.fromJson(data);
-        return _userDetails;
+            if (response.statusCode == 200) {
+              var data = json.decode(response.body);
+              _userDetails = UserDetails.fromJson(data);
+              return _userDetails;
+            }
+            notifyListeners();
+          } catch (e) {
+            print(e);
+            print(e.message);
+          }
+          break;
+        case DataConnectionStatus.disconnected:
+          print('no internet.');
+
+          break;
       }
-      notifyListeners();
-    } catch (e) {
-      print(e);
-      return e.message;
-    }
+    });
+    await Future.delayed(Duration(seconds: 30));
+    await listener.cancel();
     return _userDetails;
   }
 }
