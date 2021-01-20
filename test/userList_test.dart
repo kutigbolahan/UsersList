@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import 'package:usersList/model/user_DetailModel.dart';
 import 'package:usersList/model/user_listModel.dart';
 
+//unit test using mockito
+
 UserList _userList;
 UserDetails _userDetails;
 

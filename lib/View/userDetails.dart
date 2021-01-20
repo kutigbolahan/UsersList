@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:usersList/viewModel/userList.dart';
@@ -24,10 +25,10 @@ class UserDetails extends StatelessWidget {
                   );
                 }
                 if (snapshot.connectionState == ConnectionState.none) {
-                  return Center(child: Text('Error!!! Plesea try again'));
+                  return Center(child: Text('Error!!! Please try again'));
                 }
                 if (snapshot.hasError) {
-                  return Center(child: Text('Error!!! Plesea try again'));
+                  return Center(child: Text('Error!!! Please try again'));
                 }
                 if (snapshot.connectionState == ConnectionState.done) {
                   return Center(
@@ -39,8 +40,7 @@ class UserDetails extends StatelessWidget {
                           height: 150,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(200),
-                            border:
-                                Border.all(color: Color(0xff01A0C7), width: 6),
+                            border: Border.all(color: Colors.blue, width: 6),
                           ),
                           child: CircleAvatar(
                               backgroundColor: Colors.white,
@@ -61,18 +61,182 @@ class UserDetails extends StatelessWidget {
                           ],
                         ),
                         SizedBox(height: 5),
-                        Text(snapshot.data.email),
-                        SizedBox(height: 5),
-                        Text(snapshot.data.phone),
-                        Container(
-                          height: 200,
+                        RaisedButton(
+                          color: Colors.blue,
+                          textColor: Colors.white,
+                          onPressed: () {},
+                          child: Text('Send email'),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 70,
+                              height: 70,
+                              child: Card(
+                                color: Colors.white,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      CupertinoIcons.phone,
+                                      color: Colors.black26,
+                                    ),
+                                    SizedBox(
+                                      height: 3,
+                                    ),
+                                    Text('Call')
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: 70,
+                              height: 70,
+                              child: Card(
+                                color: Colors.white,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      CupertinoIcons.video_camera,
+                                      color: Colors.black26,
+                                    ),
+                                    SizedBox(
+                                      height: 3,
+                                    ),
+                                    Text('Video')
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: 70,
+                              height: 70,
+                              child: Card(
+                                color: Colors.white,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      CupertinoIcons.chat_bubble,
+                                      color: Colors.black26,
+                                    ),
+                                    SizedBox(
+                                      height: 3,
+                                    ),
+                                    Text('Chat')
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: 70,
+                              height: 70,
+                              child: Card(
+                                color: Colors.white,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      CupertinoIcons.mail,
+                                      color: Colors.black26,
+                                    ),
+                                    SizedBox(
+                                      height: 3,
+                                    ),
+                                    Text('Mail')
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Expanded(
                           child: GridView.count(
                             crossAxisCount: 2,
                             children: <Widget>[
-                              FlutterLogo(),
-                              FlutterLogo(),
-                              FlutterLogo(),
-                              FlutterLogo(),
+                              Card(
+                                color: Colors.green,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      CupertinoIcons.house,
+                                      color: Colors.white,
+                                    ),
+                                    SizedBox(height: 6),
+                                    Text(
+                                      snapshot.data.location.street,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(color: Colors.white),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Card(
+                                color: Colors.red,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      CupertinoIcons.phone_arrow_up_right,
+                                      color: Colors.white,
+                                    ),
+                                    SizedBox(height: 6),
+                                    Text(
+                                      snapshot.data.phone,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(color: Colors.white),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Card(
+                                color: Colors.black,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      CupertinoIcons.mail_solid,
+                                      color: Colors.white,
+                                    ),
+                                    SizedBox(height: 6),
+                                    Text(
+                                      snapshot.data.email,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(color: Colors.white),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Card(
+                                color: Colors.orange,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      CupertinoIcons.person,
+                                      color: Colors.white,
+                                    ),
+                                    SizedBox(height: 6),
+                                    Text(
+                                      snapshot.data.gender,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(color: Colors.white),
+                                    )
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                         )
