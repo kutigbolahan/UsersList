@@ -62,10 +62,12 @@ class UserDetails extends StatelessWidget {
                         ),
                         SizedBox(height: 5),
                         RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6)),
                           color: Colors.blue,
                           textColor: Colors.white,
                           onPressed: () {},
-                          child: Text('Send email'),
+                          child: Text('Send Email'),
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
