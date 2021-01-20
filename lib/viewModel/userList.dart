@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'package:usersList/model/user_DetailModel.dart';
@@ -12,6 +13,7 @@ class UserListApi with ChangeNotifier {
   UserList _userList;
   UserDetails _userDetails;
   Box feedsBox = Hive.box('userList');
+  List userData = [];
 
   // ignore: unused_element
   Future<UserList> getUsersList(BuildContext context) async {
@@ -40,10 +42,12 @@ class UserListApi with ChangeNotifier {
           break;
         case DataConnectionStatus.disconnected:
           print('no network');
+          getUsersLocally(context);
 
           break;
       }
     });
+
     await Future.delayed(Duration(seconds: 30));
     await listener.cancel();
     return _userList;
@@ -80,5 +84,30 @@ class UserListApi with ChangeNotifier {
     await Future.delayed(Duration(seconds: 30));
     await listener.cancel();
     return _userDetails;
+  }
+
+  Future getUsersLocally(BuildContext context) async {
+    final assetBundle = DefaultAssetBundle.of(context);
+    final data = await assetBundle.loadString('assets/users.json');
+    final body = json.decode(data);
+
+    return body;
+  }
+
+  showToast(BuildContext context, msg) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Scaffold.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(SnackBar(
+          behavior: SnackBarBehavior.fixed,
+          backgroundColor: Colors.red,
+          shape: RoundedRectangleBorder(),
+          content: Text(
+            msg,
+            style: TextStyle(fontSize: 12, color: Colors.white),
+          ),
+          duration: Duration(seconds: 10),
+        ));
+    });
   }
 }
