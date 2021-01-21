@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:usersList/View/userDetails.dart';
 import 'package:usersList/View/userLocalPage.dart';
 import 'package:usersList/viewModel/userList.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -83,11 +84,34 @@ class _HomePageState extends State<HomePage> {
                                         builder: (context) => UserDetails()),
                                   );
                           },
-                          leading: CircleAvatar(
-                              backgroundColor: Colors.white,
-                              radius: 30,
-                              backgroundImage: NetworkImage(
-                                  snapshot.data.data[index].picture)),
+                          leading: CachedNetworkImage(
+                            imageUrl: snapshot.data.data[index].picture,
+                            imageBuilder: (context, imageProvider) => Container(
+                              width: 50,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                    image: imageProvider, fit: BoxFit.contain),
+                              ),
+                            ),
+                            placeholder: (context, url) =>
+                                CircularProgressIndicator(
+                              strokeWidth: 1.5,
+                              backgroundColor: Colors.blue,
+                            ),
+                            errorWidget: (context, url, error) =>
+                                CircularProgressIndicator(
+                              strokeWidth: 1.5,
+                              backgroundColor: Colors.blue,
+                            ),
+                          ),
+
+                          // CircleAvatar(
+                          //     backgroundColor: Colors.white,
+                          //     radius: 30,
+                          //     backgroundImage: NetworkImage(
+                          //         snapshot.data.data[index].picture)),
                           title: Row(
                             children: [
                               Text(snapshot.data.data[index].title),

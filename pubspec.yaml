@@ -33,7 +33,9 @@ dependencies:
   hive:
   hive_flutter: 
   path_provider: 
-  data_connection_checker:   
+  data_connection_checker:  
+ 
+  cached_network_image: ^2.5.0
 
 dev_dependencies:
   flutter_test:
