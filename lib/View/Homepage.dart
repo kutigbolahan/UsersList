@@ -56,10 +56,7 @@ class _HomePageState extends State<HomePage> {
                   return Center(child: Text('Error!!! Please try again'));
                 }
                 if (snapshot.data == null) {
-                  return
-                      //showToast(context, 'Please check internet connection');
-
-                      UserLocalPage();
+                  return UserLocalPage();
                 }
                 if (snapshot.connectionState == ConnectionState.done) {
                   return ListView.separated(
@@ -106,12 +103,6 @@ class _HomePageState extends State<HomePage> {
                               backgroundColor: Colors.blue,
                             ),
                           ),
-
-                          // CircleAvatar(
-                          //     backgroundColor: Colors.white,
-                          //     radius: 30,
-                          //     backgroundImage: NetworkImage(
-                          //         snapshot.data.data[index].picture)),
                           title: Row(
                             children: [
                               Text(snapshot.data.data[index].title),

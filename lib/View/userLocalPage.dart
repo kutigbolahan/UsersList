@@ -55,13 +55,7 @@ class _UserLocalPageState extends State<UserLocalPage> {
                             userNotifier.showToast(context,
                                 'Please check your internet connection and try again!!!');
                           },
-                          leading: //snapshot.data[index]['title'] == null
-                              // ?
-                              CircularProgressIndicator(),
-                          // : CircleAvatar(
-                          //     backgroundColor: Colors.white,
-                          //     radius: 30,
-                          //   ),
+                          leading: CircularProgressIndicator(),
                           title: Row(
                             children: [
                               Text(snapshot.data[index]['title']),

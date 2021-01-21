@@ -13,7 +13,6 @@ class UserListApi with ChangeNotifier {
   UserList _userList;
   UserDetails _userDetails;
   Box feedsBox = Hive.box('userList');
-  List userData = [];
 
   // ignore: unused_element
   Future<UserList> getUsersList(BuildContext context) async {
